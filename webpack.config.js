@@ -1,5 +1,7 @@
 var path = require("path");
 var CleanWebpackPlugin = require("clean-webpack-plugin");
+var HtmlWebpackPlugin = require("html-webpack-plugin");
+var UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 var webpack = require("webpack");
 
 module.exports = {
@@ -13,9 +15,21 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),
+        new HtmlWebpackPlugin({
+            title: "web app"
+        }),
         new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new UglifyJsPlugin()
     ],
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"]
+            }
+        ]
+    },
     output: {
         filename: "[name].bundle.js",
         path: path.join(__dirname, "dist"),
